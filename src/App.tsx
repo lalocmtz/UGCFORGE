@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 import { supabase } from '@/integrations/supabase/client';
 import AppLayout from './components/AppLayout';
 import AuthPage from './pages/AuthPage';
@@ -51,9 +52,9 @@ const App = () => (
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/" element={<AuthGuard><AppLayout /></AuthGuard>}>
             <Route index element={<Dashboard />} />
-            <Route path="new" element={<NewVideoPage />} />
-            <Route path="intelligence" element={<IntelligencePage />} />
-            <Route path="intelligence/queue" element={<IntelligenceQueuePage />} />
+            <Route path="new" element={<ErrorBoundary><NewVideoPage /></ErrorBoundary>} />
+            <Route path="intelligence" element={<ErrorBoundary><IntelligencePage /></ErrorBoundary>} />
+            <Route path="intelligence/queue" element={<ErrorBoundary><IntelligenceQueuePage /></ErrorBoundary>} />
             <Route path="videos" element={<VideosPage />} />
             <Route path="personas" element={<PersonasPage />} />
             <Route path="templates" element={<TemplatesPage />} />

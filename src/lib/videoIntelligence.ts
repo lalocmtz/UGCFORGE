@@ -1,3 +1,5 @@
+import { supabase } from '@/integrations/supabase/client';
+
 export type VariantStyle =
   | 'testimonial_honest'
   | 'shock_hook'
@@ -59,12 +61,10 @@ export interface ScriptAnalysis {
 }
 
 export class VideoIntelligenceEngine {
-  private anthropicKey: string;
   private rapidApiKey?: string;
   private assemblyAiKey?: string;
 
-  constructor(anthropicKey: string, rapidApiKey?: string, assemblyAiKey?: string) {
-    this.anthropicKey = anthropicKey;
+  constructor(rapidApiKey?: string, assemblyAiKey?: string) {
     this.rapidApiKey = rapidApiKey;
     this.assemblyAiKey = assemblyAiKey;
   }
@@ -107,6 +107,10 @@ export class VideoIntelligenceEngine {
     });
     const uploadData = await uploadRes.json();
     const transcriptId = uploadData.id;
+
+    if (!transcriptId) {
+      throw new Error('Failed to start transcription: ' + (uploadData.error || 'No transcript ID returned'));
+    }
 
     for (let i = 0; i < 60; i++) {
       await new Promise((r) => setTimeout(r, 3000));
@@ -179,37 +183,25 @@ Responde SOLO con este JSON:
   "a_b_test_recommendation": "recomendación de A/B test"
 }`;
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': this.anthropicKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
+    // Call via Edge Function instead of direct Anthropic API
+    const { data, error } = await supabase.functions.invoke('analyze-script', {
+      body: {
         system: systemPrompt,
         messages: [{ role: 'user', content: userPrompt }],
-      }),
+        max_tokens: 4000,
+      },
     });
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error?.message || `Anthropic API error: ${response.status}`);
-    }
+    if (error) throw new Error(error.message || 'Error calling analyze-script function');
 
-    const result = await response.json();
-    const text = result.content?.[0]?.text || '';
+    const text = data?.content?.[0]?.text || '';
 
     try {
       return JSON.parse(text) as ScriptAnalysis;
     } catch {
-      // Try to extract JSON from the response
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (jsonMatch) return JSON.parse(jsonMatch[0]) as ScriptAnalysis;
-      throw new Error('No se pudo parsear la respuesta de Claude');
+      throw new Error('No se pudo parsear la respuesta de IA');
     }
   }
 }
