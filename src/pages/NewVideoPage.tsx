@@ -165,12 +165,12 @@ function Step4Generate() {
 
     // Get API key from user_settings
     const { data: settings } = await supabase
-      .from('user_settings' as any)
+      .from('user_settings')
       .select('kie_api_key')
       .eq('id', user.id)
       .single();
 
-    const apiKey = (settings as any)?.kie_api_key;
+    const apiKey = settings?.kie_api_key;
     if (!apiKey) {
       toast.error('Configura tu API key de kie.ai en Settings');
       return;
