@@ -149,9 +149,12 @@ export class KieAIClient {
     taskId: string,
     onProgress?: (data: any) => void,
     maxAttempts = 120,
-    intervalMs = 5000
+    intervalMs = 5000,
+    signal?: AbortSignal
   ): Promise<TaskResult> {
     for (let i = 0; i < maxAttempts; i++) {
+      if (signal?.aborted) throw new Error('Generation cancelled');
+
       const res = await fetch(`${BASE_URL}/api/v1/market/task/${taskId}`, { headers: this.headers() });
       const json = await res.json();
       const data = json.data || json;
@@ -175,7 +178,15 @@ export class KieAIClient {
         throw new Error(data.error_message || data.message || `Task ${taskId} failed`);
       }
 
-      await new Promise(r => setTimeout(r, intervalMs));
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(resolve, intervalMs);
+        if (signal) {
+          signal.addEventListener('abort', () => {
+            clearTimeout(timeout);
+            reject(new Error('Generation cancelled'));
+          }, { once: true });
+        }
+      });
     }
     throw new Error(`Task ${taskId} timed out`);
   }
