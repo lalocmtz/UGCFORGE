@@ -297,6 +297,19 @@ function PipelineProgress() {
 
 export default function NewVideoPage() {
   const { currentStep, isRunning, resultClips } = useUGCStore();
+  const location = useLocation();
+
+  useEffect(() => {
+    const prefilled = (location.state as any)?.prefilled;
+    if (prefilled) {
+      const store = useUGCStore.getState();
+      if (prefilled.script) store.setScript(prefilled.script);
+      if (prefilled.productName) store.setProductName(prefilled.productName);
+      if (prefilled.cta) store.setCta(prefilled.cta);
+      store.setStep(1);
+      window.history.replaceState({}, '');
+    }
+  }, [location.state]);
 
   if (isRunning || resultClips.length > 0) return <PipelineProgress />;
 
