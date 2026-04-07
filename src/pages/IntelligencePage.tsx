@@ -40,12 +40,11 @@ function InputView() {
       .single();
 
     if (!settings?.anthropic_key) {
-      toast.error('Configura tu Anthropic API key en Settings');
+      toast.error('Configura tu Anthropic API key en Settings (necesario para el análisis)');
       return;
     }
 
     const engine = new VideoIntelligenceEngine(
-      settings.anthropic_key,
       settings.rapidapi_key || undefined,
       settings.assemblyai_key || undefined
     );
