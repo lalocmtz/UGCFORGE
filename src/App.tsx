@@ -13,6 +13,8 @@ import VideosPage from './pages/VideosPage';
 import PersonasPage from './pages/PersonasPage';
 import TemplatesPage from './pages/TemplatesPage';
 import SettingsPage from './pages/SettingsPage';
+import IntelligencePage from './pages/IntelligencePage';
+import IntelligenceQueuePage from './pages/IntelligenceQueuePage';
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
