@@ -14,7 +14,162 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      personas: {
+        Row: {
+          base_image_url: string
+          character_sheet: Json | null
+          created_at: string | null
+          el_voice_id: string | null
+          el_voice_name: string | null
+          id: string
+          is_default: boolean | null
+          name: string
+          persona_type: string
+          usage_count: number | null
+          user_id: string
+        }
+        Insert: {
+          base_image_url: string
+          character_sheet?: Json | null
+          created_at?: string | null
+          el_voice_id?: string | null
+          el_voice_name?: string | null
+          id?: string
+          is_default?: boolean | null
+          name: string
+          persona_type: string
+          usage_count?: number | null
+          user_id: string
+        }
+        Update: {
+          base_image_url?: string
+          character_sheet?: Json | null
+          created_at?: string | null
+          el_voice_id?: string | null
+          el_voice_name?: string | null
+          id?: string
+          is_default?: boolean | null
+          name?: string
+          persona_type?: string
+          usage_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ugc_projects: {
+        Row: {
+          cloned_voice_id: string | null
+          created_at: string | null
+          credits_used: number | null
+          cta: string
+          current_step: string | null
+          error_message: string | null
+          hook_type: string
+          id: string
+          key_benefit: string
+          opening_video_url: string | null
+          persona_image_url: string | null
+          persona_type: string
+          pipeline_mode: string | null
+          product_image_url: string
+          product_name: string
+          scene_clips: Json | null
+          script: string | null
+          status: string | null
+          steps_data: Json | null
+          updated_at: string | null
+          user_id: string
+          video_style: string
+          voiceover_urls: Json | null
+        }
+        Insert: {
+          cloned_voice_id?: string | null
+          created_at?: string | null
+          credits_used?: number | null
+          cta?: string
+          current_step?: string | null
+          error_message?: string | null
+          hook_type: string
+          id?: string
+          key_benefit: string
+          opening_video_url?: string | null
+          persona_image_url?: string | null
+          persona_type: string
+          pipeline_mode?: string | null
+          product_image_url: string
+          product_name: string
+          scene_clips?: Json | null
+          script?: string | null
+          status?: string | null
+          steps_data?: Json | null
+          updated_at?: string | null
+          user_id: string
+          video_style: string
+          voiceover_urls?: Json | null
+        }
+        Update: {
+          cloned_voice_id?: string | null
+          created_at?: string | null
+          credits_used?: number | null
+          cta?: string
+          current_step?: string | null
+          error_message?: string | null
+          hook_type?: string
+          id?: string
+          key_benefit?: string
+          opening_video_url?: string | null
+          persona_image_url?: string | null
+          persona_type?: string
+          pipeline_mode?: string | null
+          product_image_url?: string
+          product_name?: string
+          scene_clips?: Json | null
+          script?: string | null
+          status?: string | null
+          steps_data?: Json | null
+          updated_at?: string | null
+          user_id?: string
+          video_style?: string
+          voiceover_urls?: Json | null
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          brand_name: string | null
+          created_at: string | null
+          credits_cached: number | null
+          credits_updated_at: string | null
+          default_cta: string | null
+          default_persona: string | null
+          elevenlabs_api_key: string | null
+          id: string
+          kie_api_key: string | null
+        }
+        Insert: {
+          brand_name?: string | null
+          created_at?: string | null
+          credits_cached?: number | null
+          credits_updated_at?: string | null
+          default_cta?: string | null
+          default_persona?: string | null
+          elevenlabs_api_key?: string | null
+          id: string
+          kie_api_key?: string | null
+        }
+        Update: {
+          brand_name?: string | null
+          created_at?: string | null
+          credits_cached?: number | null
+          credits_updated_at?: string | null
+          default_cta?: string | null
+          default_persona?: string | null
+          elevenlabs_api_key?: string | null
+          id?: string
+          kie_api_key?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
