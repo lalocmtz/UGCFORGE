@@ -155,7 +155,10 @@ export class KieAIClient {
       const res = await fetch(`${BASE_URL}/api/v1/market/task/${taskId}`, { headers: this.headers() });
       const json = await res.json();
       const data = json.data || json;
-      const status = (data.status || '').toLowerCase();
+      const rawStatus = data.status ?? data.task_status ?? '';
+      const status = typeof rawStatus === 'string'
+        ? rawStatus.toLowerCase()
+        : String(rawStatus).toLowerCase();
 
       if (onProgress) onProgress(data);
 

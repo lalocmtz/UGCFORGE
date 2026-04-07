@@ -1,5 +1,6 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { useUGCStore } from '@/store/ugcStore';
 import { generateScript, PERSONA_LABELS, VIDEO_STYLES, HOOK_TYPES } from '@/lib/promptEngine';
 import { QUICK_STEPS, FULL_STEPS, runPipeline } from '@/lib/pipelineOrchestrator';
@@ -296,6 +297,19 @@ function PipelineProgress() {
 
 export default function NewVideoPage() {
   const { currentStep, isRunning, resultClips } = useUGCStore();
+  const location = useLocation();
+
+  useEffect(() => {
+    const prefilled = (location.state as any)?.prefilled;
+    if (prefilled) {
+      const store = useUGCStore.getState();
+      if (prefilled.script) store.setScript(prefilled.script);
+      if (prefilled.productName) store.setProductName(prefilled.productName);
+      if (prefilled.cta) store.setCta(prefilled.cta);
+      store.setStep(1);
+      window.history.replaceState({}, '');
+    }
+  }, [location.state]);
 
   if (isRunning || resultClips.length > 0) return <PipelineProgress />;
 

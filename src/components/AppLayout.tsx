@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard, Plus, Video, Users, LayoutTemplate, Settings, Menu, X, LogOut, Zap
+  LayoutDashboard, Plus, Video, Users, LayoutTemplate, Settings, Menu, X, LogOut, Zap, Brain
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 const navItems = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/new', icon: Plus, label: 'Nuevo Video' },
+  { to: '/intelligence', icon: Brain, label: 'Intelligence' },
   { to: '/videos', icon: Video, label: 'Mis Videos' },
   { to: '/personas', icon: Users, label: 'Personas' },
   { to: '/templates', icon: LayoutTemplate, label: 'Templates' },

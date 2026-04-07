@@ -13,6 +13,8 @@ import VideosPage from './pages/VideosPage';
 import PersonasPage from './pages/PersonasPage';
 import TemplatesPage from './pages/TemplatesPage';
 import SettingsPage from './pages/SettingsPage';
+import IntelligencePage from './pages/IntelligencePage';
+import IntelligenceQueuePage from './pages/IntelligenceQueuePage';
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -50,6 +52,8 @@ const App = () => (
           <Route path="/" element={<AuthGuard><AppLayout /></AuthGuard>}>
             <Route index element={<Dashboard />} />
             <Route path="new" element={<NewVideoPage />} />
+            <Route path="intelligence" element={<IntelligencePage />} />
+            <Route path="intelligence/queue" element={<IntelligenceQueuePage />} />
             <Route path="videos" element={<VideosPage />} />
             <Route path="personas" element={<PersonasPage />} />
             <Route path="templates" element={<TemplatesPage />} />

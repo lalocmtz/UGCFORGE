@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      generation_batches: {
+        Row: {
+          analysis_id: string | null
+          completed_at: string | null
+          completed_videos: number | null
+          created_at: string | null
+          failed_videos: number | null
+          id: string
+          status: string | null
+          total_videos: number
+          user_id: string
+        }
+        Insert: {
+          analysis_id?: string | null
+          completed_at?: string | null
+          completed_videos?: number | null
+          created_at?: string | null
+          failed_videos?: number | null
+          id?: string
+          status?: string | null
+          total_videos: number
+          user_id: string
+        }
+        Update: {
+          analysis_id?: string | null
+          completed_at?: string | null
+          completed_videos?: number | null
+          created_at?: string | null
+          failed_videos?: number | null
+          id?: string
+          status?: string | null
+          total_videos?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generation_batches_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "video_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       personas: {
         Row: {
           base_image_url: string
@@ -58,12 +102,14 @@ export type Database = {
       }
       ugc_projects: {
         Row: {
+          batch_id: string | null
           cloned_voice_id: string | null
           created_at: string | null
           credits_used: number | null
           cta: string
           current_step: string | null
           error_message: string | null
+          hook_3s: string | null
           hook_type: string
           id: string
           key_benefit: string
@@ -75,20 +121,24 @@ export type Database = {
           product_name: string
           scene_clips: Json | null
           script: string | null
+          source_analysis_id: string | null
           status: string | null
           steps_data: Json | null
           updated_at: string | null
           user_id: string
+          variant_style: string | null
           video_style: string
           voiceover_urls: Json | null
         }
         Insert: {
+          batch_id?: string | null
           cloned_voice_id?: string | null
           created_at?: string | null
           credits_used?: number | null
           cta?: string
           current_step?: string | null
           error_message?: string | null
+          hook_3s?: string | null
           hook_type: string
           id?: string
           key_benefit: string
@@ -100,20 +150,24 @@ export type Database = {
           product_name: string
           scene_clips?: Json | null
           script?: string | null
+          source_analysis_id?: string | null
           status?: string | null
           steps_data?: Json | null
           updated_at?: string | null
           user_id: string
+          variant_style?: string | null
           video_style: string
           voiceover_urls?: Json | null
         }
         Update: {
+          batch_id?: string | null
           cloned_voice_id?: string | null
           created_at?: string | null
           credits_used?: number | null
           cta?: string
           current_step?: string | null
           error_message?: string | null
+          hook_3s?: string | null
           hook_type?: string
           id?: string
           key_benefit?: string
@@ -125,17 +179,36 @@ export type Database = {
           product_name?: string
           scene_clips?: Json | null
           script?: string | null
+          source_analysis_id?: string | null
           status?: string | null
           steps_data?: Json | null
           updated_at?: string | null
           user_id?: string
+          variant_style?: string | null
           video_style?: string
           voiceover_urls?: Json | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "ugc_projects_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "generation_batches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ugc_projects_source_analysis_id_fkey"
+            columns: ["source_analysis_id"]
+            isOneToOne: false
+            referencedRelation: "video_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_settings: {
         Row: {
+          anthropic_key: string | null
+          assemblyai_key: string | null
           brand_name: string | null
           created_at: string | null
           credits_cached: number | null
@@ -145,8 +218,11 @@ export type Database = {
           elevenlabs_api_key: string | null
           id: string
           kie_api_key: string | null
+          rapidapi_key: string | null
         }
         Insert: {
+          anthropic_key?: string | null
+          assemblyai_key?: string | null
           brand_name?: string | null
           created_at?: string | null
           credits_cached?: number | null
@@ -156,8 +232,11 @@ export type Database = {
           elevenlabs_api_key?: string | null
           id: string
           kie_api_key?: string | null
+          rapidapi_key?: string | null
         }
         Update: {
+          anthropic_key?: string | null
+          assemblyai_key?: string | null
           brand_name?: string | null
           created_at?: string | null
           credits_cached?: number | null
@@ -167,6 +246,61 @@ export type Database = {
           elevenlabs_api_key?: string | null
           id?: string
           kie_api_key?: string | null
+          rapidapi_key?: string | null
+        }
+        Relationships: []
+      }
+      video_analyses: {
+        Row: {
+          analysis_result: Json | null
+          compliance_filter: boolean | null
+          created_at: string | null
+          id: string
+          manual_script: string | null
+          original_likes: number | null
+          original_plays: number | null
+          original_shares: number | null
+          product_category: string | null
+          product_name: string
+          raw_transcript: string | null
+          source_url: string | null
+          target_platform: string | null
+          user_id: string
+          variants_count: number | null
+        }
+        Insert: {
+          analysis_result?: Json | null
+          compliance_filter?: boolean | null
+          created_at?: string | null
+          id?: string
+          manual_script?: string | null
+          original_likes?: number | null
+          original_plays?: number | null
+          original_shares?: number | null
+          product_category?: string | null
+          product_name: string
+          raw_transcript?: string | null
+          source_url?: string | null
+          target_platform?: string | null
+          user_id: string
+          variants_count?: number | null
+        }
+        Update: {
+          analysis_result?: Json | null
+          compliance_filter?: boolean | null
+          created_at?: string | null
+          id?: string
+          manual_script?: string | null
+          original_likes?: number | null
+          original_plays?: number | null
+          original_shares?: number | null
+          product_category?: string | null
+          product_name?: string
+          raw_transcript?: string | null
+          source_url?: string | null
+          target_platform?: string | null
+          user_id?: string
+          variants_count?: number | null
         }
         Relationships: []
       }
