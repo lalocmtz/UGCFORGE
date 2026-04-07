@@ -52,6 +52,8 @@ const App = () => (
           <Route path="/" element={<AuthGuard><AppLayout /></AuthGuard>}>
             <Route index element={<Dashboard />} />
             <Route path="new" element={<NewVideoPage />} />
+            <Route path="intelligence" element={<IntelligencePage />} />
+            <Route path="intelligence/queue" element={<IntelligenceQueuePage />} />
             <Route path="videos" element={<VideosPage />} />
             <Route path="personas" element={<PersonasPage />} />
             <Route path="templates" element={<TemplatesPage />} />
