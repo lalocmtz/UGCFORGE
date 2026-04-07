@@ -51,14 +51,14 @@ const App = () => (
         <Routes>
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/" element={<AuthGuard><AppLayout /></AuthGuard>}>
-            <Route index element={<Dashboard />} />
+            <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
             <Route path="new" element={<ErrorBoundary><NewVideoPage /></ErrorBoundary>} />
             <Route path="intelligence" element={<ErrorBoundary><IntelligencePage /></ErrorBoundary>} />
             <Route path="intelligence/queue" element={<ErrorBoundary><IntelligenceQueuePage /></ErrorBoundary>} />
-            <Route path="videos" element={<VideosPage />} />
-            <Route path="personas" element={<PersonasPage />} />
-            <Route path="templates" element={<TemplatesPage />} />
-            <Route path="settings" element={<SettingsPage />} />
+            <Route path="videos" element={<ErrorBoundary><VideosPage /></ErrorBoundary>} />
+            <Route path="personas" element={<ErrorBoundary><PersonasPage /></ErrorBoundary>} />
+            <Route path="templates" element={<ErrorBoundary><TemplatesPage /></ErrorBoundary>} />
+            <Route path="settings" element={<ErrorBoundary><SettingsPage /></ErrorBoundary>} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
