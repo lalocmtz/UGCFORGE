@@ -192,7 +192,20 @@ Responde SOLO con este JSON:
       },
     });
 
-    if (error) throw new Error(error.message || 'Error calling analyze-script function');
+    // supabase.functions.invoke wraps non-2xx as a generic error,
+    // but the real message is in `data` (parsed JSON body) or `error.context`
+    if (error) {
+      // Try to extract the real error message from the response body
+      const realMessage =
+        (data as any)?.error ||
+        (typeof error === 'object' && 'context' in error
+          ? await (error as any).context?.json?.().catch(() => null)
+          : null
+        )?.error ||
+        error.message ||
+        'Error calling analyze-script function';
+      throw new Error(realMessage);
+    }
 
     const text = data?.content?.[0]?.text || '';
 
