@@ -35,10 +35,19 @@ export const FULL_STEPS: PipelineStep[] = [
 ];
 
 // Helper to persist progress without blocking pipeline
-async function updateProject(projectId: string | null, update: Record<string, any>) {
+async function updateProject(projectId: string | null, update: Partial<{
+  current_step: string;
+  steps_data: any[];
+  product_image_url: string;
+  persona_image_url: string;
+  scene_clips: any;
+  opening_video_url: string;
+  status: string;
+  error_message: string;
+}>) {
   if (!projectId) return;
   try {
-    await supabase.from('ugc_projects').update(update).eq('id', projectId);
+    await supabase.from('ugc_projects').update(update as any).eq('id', projectId);
   } catch {
     // Silent — persistence should never block the pipeline
   }
