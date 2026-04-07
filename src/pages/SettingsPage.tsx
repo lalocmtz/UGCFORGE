@@ -22,12 +22,11 @@ export default function SettingsPage() {
   const loadSettings = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    const { data } = await supabase.from('user_settings' as any).select('*').eq('id', user.id).single();
+    const { data } = await supabase.from('user_settings').select('*').eq('id', user.id).single();
     if (data) {
-      const s = data as any;
-      setKieKey(s.kie_api_key || '');
-      setElevenKey(s.elevenlabs_api_key || '');
-      setBrandName(s.brand_name || '');
+      setKieKey(data.kie_api_key || '');
+      setElevenKey(data.elevenlabs_api_key || '');
+      setBrandName(data.brand_name || '');
     }
   };
 
@@ -55,12 +54,12 @@ export default function SettingsPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { toast.error('No autenticado'); setSaving(false); return; }
 
-    const { error } = await supabase.from('user_settings' as any).upsert({
+    const { error } = await supabase.from('user_settings').upsert({
       id: user.id,
       kie_api_key: kieKey,
       elevenlabs_api_key: elevenKey,
       brand_name: brandName,
-    } as any);
+    });
 
     if (error) toast.error(error.message);
     else toast.success('Settings guardados');
